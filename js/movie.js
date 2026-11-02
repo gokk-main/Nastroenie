@@ -21,6 +21,58 @@ function showError(message) {
   homeLink.hidden = false;
 }
 
+function capitalizeFirst(text) {
+  return text ? text[0].toUpperCase() + text.slice(1) : text;
+}
+
+function getMovieMoods(movie) {
+  const seen = new Set();
+
+  return (movie.moods || [])
+    .map((value) => String(value).trim())
+    .filter((value) => {
+      const key = value.toLowerCase();
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+}
+
+function getMoodsList() {
+  const existing = document.getElementById("movie-moods");
+  if (existing) return existing;
+
+  // Страховка для закэшированной старой разметки movie.html без списка настроений.
+  const list = document.createElement("ul");
+  list.className = "movie-moods";
+  list.id = "movie-moods";
+
+  if (genresEl && typeof genresEl.after === "function") {
+    genresEl.after(list);
+  } else if (genresEl && genresEl.parentNode) {
+    genresEl.parentNode.append(list);
+  }
+
+  return list;
+}
+
+function createMoodTag(value) {
+  const item = document.createElement("li");
+  item.className = "mood-tag";
+  item.textContent = capitalizeFirst(value);
+  return item;
+}
+
+function buildMoodTags(movie) {
+  const moods = getMovieMoods(movie);
+  if (moods.length) return moods.map(createMoodTag);
+
+  const fallback = document.createElement("li");
+  fallback.className = "mood-tag mood-tag--muted";
+  fallback.textContent = "Настроение не указано";
+  return [fallback];
+}
+
 function buildMeta(movie) {
   const year = document.createElement("span");
   year.textContent = movie.year;
@@ -47,6 +99,8 @@ function renderMovie(movie) {
       return item;
     })
   );
+
+  getMoodsList().replaceChildren(...buildMoodTags(movie));
 
   descriptionEl.textContent = movie.description;
   detailEl.hidden = false;
