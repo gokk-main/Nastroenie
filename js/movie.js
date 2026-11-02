@@ -39,18 +39,18 @@ function getMovieMoods(movie) {
 }
 
 function getMoodsList() {
-  const existing = document.getElementById("movie-moods");
-  if (existing) return existing;
+  let list = document.getElementById("movie-moods");
 
-  // Страховка для закэшированной старой разметки movie.html без списка настроений.
-  const list = document.createElement("ul");
-  list.className = "movie-moods";
-  list.id = "movie-moods";
+  if (!list) {
+    // Страховка для закэшированной старой разметки movie.html без списка настроений.
+    list = document.createElement("ul");
+    list.className = "movie-moods";
+    list.id = "movie-moods";
+  }
 
-  if (genresEl && typeof genresEl.after === "function") {
-    genresEl.after(list);
-  } else if (genresEl && genresEl.parentNode) {
-    genresEl.parentNode.append(list);
+  // Настроения всегда выше жанров, даже если пришла старая разметка из кэша.
+  if (genresEl && genresEl.previousElementSibling !== list && genresEl.parentNode) {
+    genresEl.parentNode.insertBefore(list, genresEl);
   }
 
   return list;
