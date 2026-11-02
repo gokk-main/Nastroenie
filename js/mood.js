@@ -45,6 +45,33 @@ function capitalizeFirst(text) {
 const mood = moodQuery ? getCanonicalMood(moodQuery) : "";
 valueEl.textContent = mood ? capitalizeFirst(mood) : "настроение не выбрано";
 
+function getMovieMoods(movie) {
+  const seen = new Set();
+
+  return (movie.moods || [])
+    .map((value) => String(value).trim())
+    .filter((value) => {
+      const key = normalize(value);
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+}
+
+function createMoodTag(value) {
+  const tag = document.createElement("span");
+  tag.className = "mood-tag";
+  tag.textContent = capitalizeFirst(value);
+  return tag;
+}
+
+function createMoodFallbackTag() {
+  const tag = document.createElement("span");
+  tag.className = "mood-tag mood-tag--muted";
+  tag.textContent = "Настроение не указано";
+  return tag;
+}
+
 function createCard(movie) {
   const link = document.createElement("a");
   link.className = "movie-card";
@@ -69,7 +96,17 @@ function createCard(movie) {
   meta.className = "movie-card-meta";
   meta.textContent = `${movie.year} · ★ ${movie.rating}`;
 
-  body.append(title, meta);
+  const moodValues = getMovieMoods(movie);
+
+  const moods = document.createElement("span");
+  moods.className = "movie-card-moods";
+  moods.append(
+    ...(moodValues.length
+      ? moodValues.map(createMoodTag)
+      : [createMoodFallbackTag()])
+  );
+
+  body.append(title, meta, moods);
   link.append(poster, body);
   return link;
 }
