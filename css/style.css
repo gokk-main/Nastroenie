@@ -275,11 +275,18 @@ body {
   color: #fff;
 }
 
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 32px;
+}
+
 .lucky-btn {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 32px;
   padding: 13px 26px;
   border: 1px solid var(--border);
   border-radius: 40px;
@@ -287,6 +294,7 @@ body {
   color: var(--text);
   font: inherit;
   font-size: 15px;
+  text-decoration: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   transition:
@@ -314,19 +322,6 @@ body {
 .lucky-btn:disabled {
   cursor: progress;
   opacity: 0.65;
-}
-
-.lucky-icon {
-  flex-shrink: 0;
-  width: 18px;
-  height: 18px;
-  color: var(--accent);
-}
-
-.lucky-icon svg {
-  width: 100%;
-  height: 100%;
-  display: block;
 }
 
 .lucky-status {
@@ -497,6 +492,19 @@ body {
   gap: 14px;
 }
 
+.movie-day-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border: 1px solid rgba(139, 92, 246, 0.45);
+  border-radius: 999px;
+  background: rgba(139, 92, 246, 0.16);
+  color: #c4b5fd;
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
 .movie-detail-title {
   font-size: clamp(26px, 3.6vw, 34px);
   text-align: left;
@@ -633,7 +641,7 @@ body {
     font-size: 14px;
   }
 
-  .lucky-btn {
+  .hero-actions {
     margin-top: 16px;
   }
 }
@@ -652,6 +660,10 @@ body {
   .movie-detail-info {
     align-items: center;
     text-align: center;
+  }
+
+  .movie-day-badge {
+    align-self: center;
   }
 
   .movie-detail-title {
