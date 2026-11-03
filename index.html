@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Настроение — подбери фильм</title>
-  <link rel="stylesheet" href="css/style.css?v=8">
+  <link rel="stylesheet" href="css/style.css?v=10">
 </head>
 <body>
   <main class="page">
@@ -107,6 +107,31 @@
           <span class="mood-label">Ужас</span>
         </button>
       </div>
+
+      <button type="button" class="lucky-btn" id="lucky-btn">
+        <span class="lucky-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" focusable="false">
+            <rect
+              x="3.5"
+              y="3.5"
+              width="17"
+              height="17"
+              rx="4"
+              stroke="currentColor"
+              stroke-width="1.6"
+            />
+            <g fill="currentColor">
+              <circle cx="8.5" cy="8.5" r="1.3"/>
+              <circle cx="15.5" cy="8.5" r="1.3"/>
+              <circle cx="12" cy="12" r="1.3"/>
+              <circle cx="8.5" cy="15.5" r="1.3"/>
+              <circle cx="15.5" cy="15.5" r="1.3"/>
+            </g>
+          </svg>
+        </span>
+        <span class="lucky-label">Мне повезёт</span>
+      </button>
+      <p class="lucky-status" id="lucky-status" hidden></p>
     </section>
 
     <footer class="footer">
@@ -114,6 +139,6 @@
     </footer>
   </main>
 
-  <script src="js/app.js?v=8"></script>
+  <script src="js/app.js?v=9"></script>
 </body>
 </html>

@@ -275,6 +275,68 @@ body {
   color: #fff;
 }
 
+.lucky-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 32px;
+  padding: 13px 26px;
+  border: 1px solid var(--border);
+  border-radius: 40px;
+  background: var(--bg-elev);
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease,
+    opacity 0.2s ease;
+}
+
+.lucky-btn:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.lucky-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.lucky-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.lucky-btn:disabled {
+  cursor: progress;
+  opacity: 0.65;
+}
+
+.lucky-icon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+}
+
+.lucky-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.lucky-status {
+  max-width: 460px;
+  color: var(--text-dim);
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
+
 .brand--link {
   text-decoration: none;
   transition: color 0.2s ease;
@@ -570,6 +632,10 @@ body {
   .mood-label {
     font-size: 14px;
   }
+
+  .lucky-btn {
+    margin-top: 16px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -607,6 +673,7 @@ body {
   .mood-label,
   .searchbar,
   .go-btn,
+  .lucky-btn,
   .back-link {
     transition: none;
   }
