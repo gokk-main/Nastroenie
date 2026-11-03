@@ -1,6 +1,7 @@
 const params = new URLSearchParams(window.location.search);
 const movieId = (params.get("id") || "").trim();
 const mood = (params.get("mood") || "").trim();
+const isMovieDayPage = document.body.dataset.page === "movie-day";
 
 const detailEl = document.getElementById("movie-detail");
 const posterEl = document.getElementById("movie-poster");
@@ -11,8 +12,14 @@ const descriptionEl = document.getElementById("movie-description");
 const backLink = document.getElementById("back-link");
 const emptyEl = document.getElementById("movie-empty");
 const homeLink = document.getElementById("home-link");
+const dayBadge = document.getElementById("movie-day-badge");
 
-backLink.href = mood ? `mood.html?mood=${encodeURIComponent(mood)}` : "index.html";
+if (isMovieDayPage) {
+  backLink.textContent = "← На главную";
+  backLink.href = "index.html";
+} else {
+  backLink.href = mood ? `mood.html?mood=${encodeURIComponent(mood)}` : "index.html";
+}
 
 function showError(message) {
   emptyEl.textContent = message;
@@ -108,8 +115,13 @@ function renderMovie(movie) {
   homeLink.hidden = true;
 }
 
+function getMovieOfTheDay(movies, date = new Date()) {
+  const dayIndex = date.getFullYear() * 372 + (date.getMonth() + 1) * 31 + date.getDate();
+  return movies[dayIndex % movies.length];
+}
+
 async function init() {
-  if (!movieId) {
+  if (!isMovieDayPage && !movieId) {
     showError("Фильм не выбран. Вернись на главную и выбери настроение.");
     return;
   }
@@ -119,14 +131,31 @@ async function init() {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const movies = await response.json();
-    const movie = movies.find((item) => String(item.id) === movieId);
+
+    if (!movies.length) {
+      showError("В базе пока нет фильмов. Загляни чуть позже.");
+      return;
+    }
+
+    const movie = isMovieDayPage
+      ? getMovieOfTheDay(movies)
+      : movies.find((item) => String(item.id) === movieId);
 
     if (!movie) {
       showError("Такой фильм не найден. Попробуй выбрать настроение заново.");
       return;
     }
 
+    if (dayBadge) {
+      const dayMovieId = String(getMovieOfTheDay(movies).id);
+      dayBadge.hidden = !(isMovieDayPage || String(movie.id) === dayMovieId);
+    }
+
     renderMovie(movie);
+
+    if (isMovieDayPage) {
+      document.title = `Фильм дня: ${movie.title} (${movie.year}) — NASTROENIE`;
+    }
   } catch (error) {
     showError(
       "Не удалось загрузить данные. Открой сайт через локальный сервер, например: python -m http.server"
